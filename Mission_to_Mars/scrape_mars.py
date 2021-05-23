@@ -106,8 +106,8 @@ def scrape():
         mars_dict['title'] = title
         mars_dict['img_url'] = img
         hemisphere_image_urls.append(mars_dict)
-
-    hemisphere_image_urls
+    
+    hemisphere = hemisphere_image_urls
     
     browser.quit()
     

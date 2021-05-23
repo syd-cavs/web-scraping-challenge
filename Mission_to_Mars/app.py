@@ -15,11 +15,11 @@ def home():
 
 @app.route("/scrape")
 def scrape():
-    mars_data = scrape_mars.scrape_all()
+    mars_data = scrape_mars.scrape()
     app.logger.info(mars_data)
     db.mars_data.update({}, mars_data, upsert=True)
     
-    return redirect("/", code=302)
+    return redirect("/")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
