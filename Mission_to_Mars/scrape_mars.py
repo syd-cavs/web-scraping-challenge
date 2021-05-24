@@ -5,11 +5,12 @@ from splinter import Browser
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
+import pymongo 
 
 
 def scrape():
-    executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
-    browser = Browser("chrome", **executable_path, headless=False)
+    executable_path = {'executable_path': ChromeDriverManager().install()}
+    browser = Browser('chrome', **executable_path, headless=False)
     
     mars = {}
     
@@ -24,9 +25,10 @@ def scrape():
     news_cleaned = news.text
 
     news_p = mars_news_title.find('div', class_='article_teaser_body')
-    rnews_p_cleaned = news_p.text
+    news_p_cleaned = news_p.text
     
-    browser.quit()
+    mars['news_title'] = news_cleaned
+    mars['news_p'] = news_p_cleaned
 
     image_url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/index.html'
     browser.visit(image_url)
@@ -40,7 +42,7 @@ def scrape():
 
     image_url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/' + featured_image
     
-    browser.quit()
+    mars['image_url'] = image_url
 
     facts_url = "https://galaxyfacts-mars.com/"
 
@@ -52,7 +54,7 @@ def scrape():
 
     html_table = mars_df.to_html()
     
-    browser.quit()
+    mars['html_table'] = html_table
 
     hems_url = "https://marshemispheres.com/"
     browser.visit(hems_url)
@@ -67,8 +69,6 @@ def scrape():
 
     for mars in hemispheres:
         titles.append(mars.text)
-
-    titles
 
     images_search = soup.find('div', class_="collapsible results")
     search_image = images_search.find_all('img', class_='thumb')
@@ -107,7 +107,8 @@ def scrape():
         mars_dict['img_url'] = img
         hemisphere_image_urls.append(mars_dict)
     
-    hemisphere = hemisphere_image_urls
+    mars['hemisphere_title'] = titles
+    mars['hemisphere_images'] = image_urls
     
     browser.quit()
     
