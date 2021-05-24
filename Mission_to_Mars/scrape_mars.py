@@ -67,8 +67,8 @@ def scrape():
     titles_search = soup.find_all('div', class_="collapsible results")
     hemispheres = titles_search[0].find_all('h3')
 
-    for mars in hemispheres:
-        titles.append(mars.text)
+    for planet in hemispheres:
+        titles.append(planet.text)
 
     images_search = soup.find('div', class_="collapsible results")
     search_image = images_search.find_all('img', class_='thumb')
@@ -84,8 +84,8 @@ def scrape():
     titles_search = soup.find_all('div', class_="collapsible results")
     hemispheres = titles_search[0].find_all('h3')
 
-    for mars in hemispheres:
-        titles.append(mars.text)
+    for planet2 in hemispheres:
+        titles.append(planet2.text)
 
     images_search = soup.find('div', class_="collapsible results")
     search_image = images_search.find_all('img', class_='thumb')
@@ -107,9 +107,10 @@ def scrape():
         mars_dict['img_url'] = img
         hemisphere_image_urls.append(mars_dict)
     
+    mars['hemispheres'] = hemisphere_image_urls
     mars['hemisphere_title'] = titles
     mars['hemisphere_images'] = image_urls
     
     browser.quit()
-    
+    print(mars)
     return mars
